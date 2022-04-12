@@ -61,7 +61,7 @@ def process_files(files, title, thumbnail=True):
 	return post_data
 
 
-def submit_post(subreddit, post_data):
+def submit_post(subreddit, post_data, nsfw=False):
 	post_type = post_data['type']
 	title = post_data['title']
 
@@ -72,14 +72,18 @@ def submit_post(subreddit, post_data):
 	elif post_type == "titletext":
 		subreddit.submit(title, selftext=post_data['text'])
 	elif post_type == "image":
-		subreddit.submit_image(title, post_data['image_path'])
+		subreddit.submit_image(title, post_data['image_path'], nsfw=nsfw)
 	elif post_type == "video":
 		if post_data.get('thumbnail'):
-			subreddit.submit_video(title, post_data['video_path'], thumbnail_path=post_data['thumbnail'])
+			subreddit.submit_video(
+				title, post_data['video_path'],
+				thumbnail_path=post_data['thumbnail'],
+				nsfw=nsfw,
+			)
 		else:
-			subreddit.submit_video(title, post_data['video_path'])
+			subreddit.submit_video(title, post_data['video_path'], nsfw=nsfw)
 	elif post_type == "gallery":
-		subreddit.submit_gallery(title, post_data['gallery'])
+		subreddit.submit_gallery(title, post_data['gallery'], nfsw=nsfw)
 
 
 def authenticate():
@@ -94,12 +98,12 @@ def authenticate():
 		print(error)
 
 
-def post(reddit, post_data_list, subreddits=subreddits):
+def post(reddit, post_data_list, subreddits=subreddits, nsfw=False):
 	print("Posting...")
 	for subred in subreddits:
 		subreddit = reddit.subreddit(subred)
 		for post_data in post_data_list:
-			submit_post(subreddit, post_data)
+			submit_post(subreddit, post_data, nsfw)
 			print(f'Posting {post_data} on {subreddit}')
 			time.sleep(1)
 	print("Posted!")

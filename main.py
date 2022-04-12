@@ -64,9 +64,15 @@ class Window:
         label = tk.Label(frame, text = 'Title', justify='left')
         label.pack(side=tk.LEFT, fill=tk.BOTH)
         title_entry = tk.Entry(frame, width = 20)
-        title_entry.insert(0,'title')
+        title_entry.insert(0, 'some title')
         title_entry.pack(side=tk.LEFT)
         self.title_entry = title_entry
+
+        frame = tk.Frame(root, bd='5')
+        frame.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
+        self.nsfw_var = tk.IntVar()
+        nsfw_check = tk.Checkbutton(frame, text="NFSW", variable=self.nsfw_var)
+        nsfw_check.pack(padx = 5, pady = 5, expand=True)
 
         frame = tk.Frame(root, bd='5')
         frame.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
@@ -87,7 +93,8 @@ class Window:
             message='Click Ok to confirm'
         )
         post_data = posting.process_files(files, self.title_entry.get(), True)
-        posting.post(self.reddit, post_data)
+        nsfw = bool(self.nsfw_var.get())
+        posting.post(self.reddit, post_data, nsfw=nsfw)
         showinfo(
             title='Done',
             message='The files has been submitted'
