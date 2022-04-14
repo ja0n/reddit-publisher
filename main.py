@@ -28,40 +28,38 @@ class Window:
 
     def init_files_list(self):
         root = self.root
-        files_frame = tk.Frame(root, bd='5')
-        files_frame.pack()
-        left_frame = tk.Frame(files_frame, bd='5')
-        left_frame.pack(side=tk.LEFT)
-        right_frame = tk.Frame(files_frame, bd='5')
-        right_frame.pack(side=tk.RIGHT)
-        label = tk.Label(left_frame, text = 'List of selected Files', justify='left')
+        label_frame = tk.Frame(root, bd='5')
+        label_frame.pack(anchor=tk.NW)
+        label = tk.Label(label_frame, text = 'List of Files', justify='left')
         label.pack()
-        files_list = tk.Listbox(left_frame, selectmode='extended', width=54)
-        files_list.pack()
-        self.files_list = files_list
 
+        actions_frame = tk.Frame(root, bd='5')
+        actions_frame.pack(anchor=tk.NW, fill=tk.BOTH, expand=True)
         select_button = ttk.Button(
-            right_frame,
-            text='Select Files',
+            actions_frame,
+            text='Pick Files',
             command=self.select_files
         )
-        select_button.pack(expand=True)
-
+        select_button.pack(side=tk.LEFT)
         remove_button = ttk.Button(
-            right_frame,
+            actions_frame,
             text='Remove Selected',
             command=self.remove_selected
         )
-        remove_button.pack(expand=True)
+        remove_button.pack(side=tk.LEFT)
+
+        files_frame = tk.Frame(root, bd='5', relief=tk.RAISED, borderwidth=1)
+        files_frame.pack()
+        files_list = tk.Listbox(files_frame, selectmode='extended', width=54)
+        files_list.pack()
+        self.files_list = files_list
 
 
     def init_title_entry(self):
         root = self.root
         frame = tk.Frame(root, bd='5')
         frame.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
-        left_frame = tk.Frame(frame, bd='5')
-        left_frame.pack(side=tk.LEFT)
-        label = tk.Label(frame, text = 'Title', justify='left')
+        label = tk.Label(frame, text = 'Title')
         label.pack(side=tk.LEFT, fill=tk.BOTH)
         title_entry = tk.Entry(frame, width = 20)
         title_entry.insert(0, 'some title')
@@ -132,6 +130,6 @@ if __name__ == '__main__':
     root = tk.Tk()
     root.title('Reddit Publisher')
     # root.resizable(False, False)
-    root.geometry('620x420')
+    root.geometry('')
     window = Window(root)
     root.mainloop()
