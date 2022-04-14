@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
-from turtle import title
 import posting
 
 
@@ -13,7 +12,21 @@ class Window:
         # root.configure(bg='black')
         self.root = root
         self.home_dir = str(Path.home())
-        self.reddit = posting.authenticate()
+
+        try:
+            self.reddit = posting.authenticate()
+            message = "Authenticated as {}".format(self.reddit.user.me())
+        except Exception:
+            self.reddit = None
+            message = 'Failed to authenticate... check praw.ini file'
+
+        label_frame = tk.Frame(root, bd='5')
+        label_frame.pack()
+        label = tk.Label(label_frame, text=message)
+        label.pack()
+
+        if not self.reddit:
+            return
 
         self.init_subreddits_list()
         self.init_files_list()

@@ -91,11 +91,14 @@ def authenticate():
 	reddit.validate_on_submit = True
 
 	try:
-		print("Authenticated as {}".format(reddit.user.me()))
+		user = reddit.user.me()
+		if not user:
+			raise EnvironmentError('Unable to authenticate')
+		print("Authenticated as {}".format(user))
 		return reddit
-	except ResponseException as error:
+	except Exception:
 		print("Something went wrong during authentication")
-		print(error)
+		raise
 
 
 def post(reddit, post_data_list, subreddits=subreddits, nsfw=False):
