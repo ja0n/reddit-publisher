@@ -15,8 +15,11 @@ IMAGE_EXTENSIONS = tuple(get_extensions_for_type('image'))
 
 
 def read_subreddits(file_name='subreddits.txt'):
-	file = open(file_name, 'r')
-	return file.read().splitlines()
+    try:
+        file = open(file_name, 'r')
+        return file.read().splitlines()
+    except:
+        return None
 
 
 def read_files(dir='input'):
