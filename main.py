@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import shutil
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog as fd
@@ -144,6 +145,9 @@ class Window:
             self.subreddits_list.delete(index)
 
     def submit_files(self):
+        if os.path.isdir('thumbnails'):
+            shutil.rmtree('thumbnails')
+        os.mkdir('thumbnails')
         files = self.files_list.get(0, tk.END)
         subreddits = self.subreddits_list.get(0, tk.END)
         print('Submitting:', files)
